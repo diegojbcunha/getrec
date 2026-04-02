@@ -1,0 +1,146 @@
+// ====================================================================
+// 3. ROTAS DE PRODUTOS (CRUD - SUPABASE)
+// ====================================================================
+
+app.get("/produtos", async (req, res) => {
+  const termo = req.query.termo;
+
+  try {
+    let query = db.from("PRODUTO").select("*").eq("ativo", 1);
+
+    if (termo) {
+      // RF06: Busca parcial no nome ou descrição
+      query = query.or(`nome.ilike.%${termo}%,descricao_detalhada.ilike.%${termo}%`);
+    }
+
+    const { data: produtos, error } = await query;
+    if (error) throw error;
+
+    res.json(produtos);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao listar produtos." });
+  }
+});
+
+app.post("/produtos", async (req, res) => {
+  const { nome, unidade_medida, estoque_minimo, ...outros } = req.body;
+
+  if (!nome || !unidade_medida || estoque_minimo === undefined) {
+    return res.status(400).json({ message: "Campos obrigatórios ausentes." });
+  }
+
+  try {
+    const { data, error } = await db
+      .from("PRODUTO")
+      .insert([{ 
+          nome, 
+          unidade_medida, 
+          estoque_minimo, 
+          estoque_atual: req.body.estoque_atual || 0,
+          ...outros 
+      }])
+      .select();
+
+    if (error) throw error;
+    res.status(201).json({ id: data[0].id_produto, message: "Produto cadastrado." });
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao cadastrar produto." });
+  }
+});
+
+app.put("/produtos/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { error } = await db
+      .from("PRODUTO")
+      .update(req.body)
+      .eq("id_produto", id);
+
+    if (error) throw error;
+    res.json({ message: "Produto atualizado com sucesso." });
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao atualizar produto." });
+  }
+});
+
+app.delete("/produtos/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Exclusão física (DELETE) ou lógica (UPDATE ativo = 0)
+    const { error } = await db.from("PRODUTO").delete().eq("id_produto", id);
+
+    if (error) throw error;
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao excluir produto." });
+  }
+});
+
+// ====================================================================
+// 4. MOVIMENTAÇÃO DE ESTOQUE (RF08, RF09, RF10)
+// ====================================================================
+
+app.post("/movimentacoes", async (req, res) => {
+  const { id_produto, id_usuario, tipo_movimentacao, quantidade, observacao } = req.body;
+
+  if (!id_produto || !id_usuario || !quantidade) {
+    return res.status(400).json({ message: "Dados incompletos." });
+  }
+
+  try {
+    // 1. Busca o estado atual do produto
+    const { data: produto, error: pError } = await db
+      .from("PRODUTO")
+      .select("estoque_atual, estoque_minimo, nome, ativo")
+      .eq("id_produto", id_produto)
+      .single();
+
+    if (pError || !produto) return res.status(404).json({ message: "Produto não encontrado." });
+    if (!produto.ativo) return res.status(400).json({ message: "Produto inativo." });
+
+    // 2. Calcula o novo estoque
+    let novoEstoque = produto.estoque_atual;
+    if (tipo_movimentacao === "ENTRADA") {
+      novoEstoque += quantidade;
+    } else {
+      if (produto.estoque_atual < quantidade) {
+        return res.status(400).json({ message: "Estoque insuficiente." });
+      }
+      novoEstoque -= quantidade;
+    }
+
+    // 3. Executa as atualizações no Supabase
+    // Registro da movimentação
+    const { error: mError } = await db.from("MOVIMENTACAO").insert([{
+      id_produto,
+      id_usuario,
+      tipo_movimentacao,
+      quantidade,
+      observacao,
+      data_movimentacao: new Date()
+    }]);
+
+    if (mError) throw mError;
+
+    // Atualização do saldo no produto
+    const { error: uError } = await db
+      .from("PRODUTO")
+      .update({ estoque_atual: novoEstoque })
+      .eq("id_produto", id_produto);
+
+    if (uError) throw uError;
+
+    // 4. Verifica alerta de estoque mínimo (RF10)
+    const alerta = novoEstoque < produto.estoque_minimo;
+
+    res.json({
+      message: "Estoque atualizado.",
+      alerta,
+      estoque_final: novoEstoque
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao processar movimentação." });
+  }
+});
