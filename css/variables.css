@@ -1,0 +1,30 @@
+/* ══════════════════════════════════════════════════
+   Variáveis CSS Comuns - IndusTrain
+   ══════════════════════════════════════════════════ */
+:root {
+  --bg:         #0E1117;
+  --bg2:        #151820;
+  --bg3:        #1C2030;
+  --surface:    #212636;
+  --surface2:   #2A3245;
+  --border:     rgba(255,255,255,0.07);
+  --border2:    rgba(255,255,255,0.13);
+  --text:       #E8EAF0;
+  --text-muted: #8B90A0;
+  --text-faint: #4A5068;
+  --accent:     #F5A623;
+  --accent2:    #E8931A;
+  --accent-dim: rgba(245,166,35,0.12);
+  --green:      #2ECC71;
+  --green-dim:  rgba(46,204,113,0.12);
+  --red:        #E74C3C;
+  --red-dim:    rgba(231,76,60,0.12);
+  --blue:       #3498DB;
+  --blue-dim:   rgba(52,152,219,0.12);
+  --purple:     #9B59B6;
+  --purple-dim: rgba(155,89,182,0.12);
+  --orange:     #E67E22;
+  --sidebar-w:  240px;
+  --radius:     8px;
+  --radius-lg:  12px;
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colaboradores — IndusTrain</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="css/variables.css" rel="stylesheet">
+<link href="css/colaboradores.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1117" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="brand-name">IndusTrain</div>
+    </div>
+    <div class="brand-sub">GESTÃO DE TREINAMENTOS</div>
+    <div class="db-pill">
+      <div class="db-dot" id="db-dot"></div>
+      <span id="db-label">Conectando...</span>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">Principal</div>
+    <button class="nav-item" onclick="location.href='dashboard-adm.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</button>
+    <button class="nav-item" onclick="location.href='treinamentos.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Treinamentos</button>
+    <button class="nav-item active" onclick="location.href='colaboradores.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Colaboradores<span class="nav-badge" id="nav-colab">—</span></button>
+    <button class="nav-item" onclick="location.href='colaboradores.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Matrículas<span class="nav-badge" id="nav-mat">—</span></button>
+    <button class="nav-item" onclick="location.href='presencas.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Presenças</button>
+    <div class="nav-section">Emissões</div>
+    <button class="nav-item" onclick="location.href='certificados.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Certificados</button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar-sm">AD</div>
+      <div><div class="user-name">Administrador</div><div class="user-role">Gestor Geral · IndusTrain</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 id="page-title">Colaboradores</h1>
+      <p id="topbar-sub">Carregando...</p>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-primary" id="btn-novo" onclick="openColabModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Novo Colaborador
+      </button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tab-colab" onclick="switchTab('colaboradores')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Colaboradores
+      <span class="tab-count" id="tc-colab">0</span>
+    </button>
+    <button class="tab" id="tab-mat" onclick="switchTab('matriculas')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Matrículas
+      <span class="tab-count" id="tc-mat">0</span>
+    </button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="search" type="text" placeholder="Buscar..." oninput="renderActive()">
+    </div>
+    <select class="filter-sel" id="filter1" onchange="renderActive()">
+      <option value="">Todos os setores</option>
+    </select>
+    <select class="filter-sel" id="filter2" onchange="renderActive()">
+      <option value="">Todos os status</option>
+    </select>
+    <div class="sep"></div>
+    <span class="count-lbl" id="count-lbl">—</span>
+  </div>
+
+  <div class="content" id="main-content">
+    <!-- KPI mini -->
+    <div class="kpi-mini" id="kpi-section">
+      <div class="kpi-m"><div class="kpi-m-icon" style="background:var(--blue-dim)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3498DB" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="kpi-m-val" id="km-colab">—</div><div class="kpi-m-label">Colaboradores</div></div></div>
+      <div class="kpi-m"><div class="kpi-m-icon" style="background:var(--green-dim)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="kpi-m-val" id="km-ativos">—</div><div class="kpi-m-label">Ativos</div></div></div>
+      <div class="kpi-m"><div class="kpi-m-icon" style="background:var(--accent-dim)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div><div class="kpi-m-val" id="km-mat">—</div><div class="kpi-m-label">Matrículas</div></div></div>
+      <div class="kpi-m"><div class="kpi-m-icon" style="background:var(--purple-dim)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B59B6" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div><div class="kpi-m-val" id="km-concluidos">—</div><div class="kpi-m-label">Concluídos</div></div></div>
+    </div>
+
+    <!-- Conteúdo dinâmico (colaboradores grid ou matrículas table) -->
+    <div id="view-container"></div>
+  </div>
+</main>
+
+<!-- ═══ MODAL COLABORADOR ═══ -->
+<div class="overlay" id="overlay-colab" onclick="closeIfBg(event,'overlay-colab')">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="colab-modal-title">Novo Colaborador</div>
+      </div>
+      <button class="modal-close" onclick="closeColabModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">Dados pessoais</div>
+      <div class="form-row c2">
+        <div class="field"><label>Nome completo *</label><input id="fc-nome" type="text" placeholder="Nome do colaborador"></div>
+        <div class="field"><label>Matrícula</label><input id="fc-matricula" type="text" placeholder="COL-001"></div>
+      </div>
+      <div class="form-row c1">
+        <div class="field"><label>E-mail</label><input id="fc-email" type="email" placeholder="email@empresa.com"></div>
+      </div>
+      <div class="form-section">Cargo e setor</div>
+      <div class="form-row c2">
+        <div class="field"><label>Setor / Área</label>
+          <select id="fc-setor">
+            <option value="">— Selecionar —</option>
+            <option>Manutenção</option><option>Produção</option><option>Qualidade</option>
+            <option>Segurança</option><option>Logística</option><option>Elétrica</option>
+            <option>TI Industrial</option><option>RH</option><option>Liderança</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="field"><label>Cargo</label><input id="fc-cargo" type="text" placeholder="Ex: Técnico Eletricista"></div>
+      </div>
+      <div class="form-section">Status</div>
+      <div class="toggle-wrap">
+        <div class="toggle on" id="fc-ativo-toggle" onclick="toggleAtivo()"></div>
+        <span class="toggle-label" id="fc-ativo-label">Colaborador ativo</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div id="colab-del-wrap"></div>
+      <div class="modal-footer-right">
+        <button class="btn-secondary" onclick="closeColabModal()">Cancelar</button>
+        <button class="btn-primary" id="btn-save-colab" onclick="saveColab()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL MATRÍCULA ═══ -->
+<div class="overlay" id="overlay-mat" onclick="closeIfBg(event,'overlay-mat')">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="mat-modal-title">Gerenciar Matrículas</div>
+        <div class="modal-sub" id="mat-modal-sub">Colaborador</div>
+      </div>
+      <button class="modal-close" onclick="closeMatModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- Nova matrícula -->
+      <div class="form-section">Adicionar matrícula</div>
+      <div style="display:flex; gap:10px; align-items:flex-end; margin-bottom:8px">
+        <div class="field" style="flex:1; margin-bottom:0">
+          <label>Treinamento</label>
+          <select id="mat-trein-sel">
+            <option value="">— Selecionar treinamento —</option>
+          </select>
+        </div>
+        <div class="field" style="width:120px; margin-bottom:0">
+          <label>Status</label>
+          <select id="mat-status-sel">
+            <option value="matriculado">Matriculado</option>
+            <option value="andamento">Em andamento</option>
+            <option value="concluido">Concluído</option>
+            <option value="reprovado">Reprovado</option>
+          </select>
+        </div>
+        <div class="field" style="width:90px; margin-bottom:0">
+          <label>Nota (0-10)</label>
+          <input id="mat-nota-inp" type="number" min="0" max="10" step="0.1" placeholder="—">
+        </div>
+        <button class="btn-primary btn-sm" onclick="addMatricula()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Matricular
+        </button>
+      </div>
+      <!-- Lista matrículas existentes -->
+      <div class="form-section" style="margin-top:20px">Matrículas atuais</div>
+      <div class="mat-list" id="mat-list">
+        <div style="color:var(--text-faint);font-size:13px;padding:12px 0">Carregando...</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span style="font-size:12px;color:var(--text-faint)" id="mat-count-info">—</span>
+      <button class="btn-secondary" onclick="closeMatModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/colaboradores.js"></script>
+</body>
+</html>

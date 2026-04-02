@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificados e Notificações — IndusTrain</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<link href="css/variables.css" rel="stylesheet">
+<link href="css/certificados.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1117" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="brand-name">IndusTrain</div>
+    </div>
+    <div class="brand-sub">GESTÃO DE TREINAMENTOS</div>
+    <div class="db-pill"><div class="db-dot" id="db-dot"></div><span id="db-label">Conectando...</span></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">Principal</div>
+    <button class="nav-item" onclick="location.href='dashboard-adm.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</button>
+    <button class="nav-item" onclick="location.href='treinamentos.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Treinamentos</button>
+    <button class="nav-item" onclick="location.href='colaboradores.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Colaboradores</button>
+    <button class="nav-item" onclick="location.href='presencas.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Presenças</button>
+    <div class="nav-section">Emissões</div>
+    <button class="nav-item active" onclick="location.href='certificados.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Certificados<span class="nav-badge green" id="nav-cert">—</span></button>
+    <button class="nav-item" onclick="location.href='certificados.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notificações<span class="nav-badge" id="nav-notif">—</span></button>
+    <div class="nav-section">Análise</div>
+    <button class="nav-item" onclick="location.href='presencas.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Relatórios</button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-av">AD</div>
+      <div><div class="user-name">Administrador</div><div class="user-role">Gestor Geral · IndusTrain</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 id="page-title">Certificados</h1>
+      <p id="topbar-sub">Carregando...</p>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-secondary" onclick="switchTab('notificacoes')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Ver Notificações
+      </button>
+      <button class="btn-green" onclick="openEmitirModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        Emitir Certificados
+      </button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tab-cert" onclick="switchTab('certificados')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Certificados emitidos
+      <span class="tab-count" id="tc-cert">0</span>
+    </button>
+    <button class="tab" id="tab-elig" onclick="switchTab('elegiveis')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+      Elegíveis (pendentes)
+      <span class="tab-count" id="tc-elig">0</span>
+    </button>
+    <button class="tab" id="tab-notif" onclick="switchTab('notificacoes')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Notificações
+      <span class="tab-count" id="tc-notif">0</span>
+    </button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="search" type="text" placeholder="Buscar..." oninput="renderActive()">
+    </div>
+    <select class="filter-sel" id="filter-trein" onchange="renderActive()">
+      <option value="">Todos os treinamentos</option>
+    </select>
+    <div class="sep"></div>
+    <span class="count-lbl" id="count-lbl">—</span>
+  </div>
+
+  <div class="content">
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi-m"><div class="kpi-m-icon" style="background:var(--green-dim)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div><div class="kpi-m-val" id="km-emitidos">—</div><div class="kpi-m-label">Emitidos</div></div></div>
+      <div class="kpi-m"><div class="kpi-m-icon" style="background:var(--accent-dim)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="kpi-m-val" id="km-elegiveis">—</div><div class="kpi-m-label">Pendentes</div></div></div>
+      <div class="kpi-m"><div class="kpi-m-icon" style="background:var(--blue-dim)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3498DB" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><div><div class="kpi-m-val" id="km-alertas">—</div><div class="kpi-m-label">Alertas ativos</div></div></div>
+      <div class="kpi-m"><div class="kpi-m-icon" style="background:var(--purple-dim)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B59B6" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="kpi-m-val" id="km-colab-cert">—</div><div class="kpi-m-label">Colaboradores certificados</div></div></div>
+    </div>
+    <!-- View dinâmica -->
+    <div id="view-container"></div>
+  </div>
+</main>
+
+<!-- ═══ MODAL EMITIR ═══ -->
+<div class="overlay" id="overlay-emitir" onclick="if(event.target.id==='overlay-emitir')closeEmitirModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Emitir Certificados</div>
+        <div class="modal-sub">Selecione os colaboradores elegíveis</div>
+      </div>
+      <button class="modal-close" onclick="closeEmitirModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">Filtrar por treinamento</div>
+      <div class="form-row c1">
+        <div class="field">
+          <label>Treinamento</label>
+          <select id="em-trein" onchange="renderEmitirList()">
+            <option value="">Todos os concluídos</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-section">Colaboradores elegíveis</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="btn-secondary btn-sm" onclick="selectAllEligible(true)">Selecionar todos</button>
+        <button class="btn-secondary btn-sm" onclick="selectAllEligible(false)">Limpar seleção</button>
+        <span style="flex:1"></span>
+        <span id="em-count" style="font-size:12px;color:var(--text-faint);line-height:2">0 selecionados</span>
+      </div>
+      <div class="eligible-list" id="emitir-list">
+        <div style="color:var(--text-faint);font-size:13px;padding:12px 0">Carregando...</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span style="font-size:12px;color:var(--text-faint)">Apenas concluídos sem certificado</span>
+      <div style="display:flex;gap:10px">
+        <button class="btn-secondary" onclick="closeEmitirModal()">Cancelar</button>
+        <button class="btn-green" id="btn-emitir" onclick="emitirCertificados()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          Emitir Selecionados
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL CERTIFICADO (preview + print) ═══ -->
+<div class="overlay" id="overlay-cert" onclick="if(event.target.id==='overlay-cert')closeCertModal()">
+  <div class="modal" style="width:700px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Certificado</div>
+        <div class="modal-sub" id="cert-modal-sub">—</div>
+      </div>
+      <button class="modal-close" onclick="closeCertModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="cert-preview-wrap">
+        <div class="cert-paper" id="cert-paper">
+          <div class="cert-border"></div>
+          <div class="cert-border-inner"></div>
+          <div class="cert-logo">
+            <div class="cert-logo-text">IndusTrain</div>
+            <div class="cert-logo-sub">Sistema de Gestão de Treinamentos</div>
+          </div>
+          <div class="cert-line"></div>
+          <div class="cert-title">Certificamos que</div>
+          <div class="cert-name" id="cert-nome">—</div>
+          <div class="cert-body">
+            concluiu com êxito o treinamento<br>
+            <span class="cert-course" id="cert-curso">—</span><br><br>
+            com carga horária de <strong id="cert-carga">—</strong> horas,<br>
+            realizado na área de <strong id="cert-area">—</strong>.
+          </div>
+          <div class="cert-footer">
+            <div>
+              <div class="cert-date" id="cert-data">—</div>
+            </div>
+            <div class="cert-sign">
+              <div class="cert-sign-line"></div>
+              <div class="cert-sign-name">Gestão de Treinamentos</div>
+              <div class="cert-sign-role">IndusTrain</div>
+            </div>
+            <div style="text-align:right">
+              <div class="cert-code" id="cert-code">Código: —</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span style="font-size:11px;color:var(--text-faint)" id="cert-emitido-em">—</span>
+      <div style="display:flex;gap:10px">
+        <button class="btn-secondary" onclick="closeCertModal()">Fechar</button>
+        <button class="btn-primary" onclick="printCert()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir / PDF
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL NOTIFICAÇÃO ═══ -->
+<div class="overlay" id="overlay-notif" onclick="if(event.target.id==='overlay-notif')closeNotifModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-title">Criar Notificação</div><div class="modal-sub">Alerta manual para colaboradores</div></div>
+      <button class="modal-close" onclick="closeNotifModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">Destinatário</div>
+      <div class="form-row c2">
+        <div class="field"><label>Tipo</label>
+          <select id="n-tipo">
+            <option value="prazo">Prazo de treinamento</option>
+            <option value="presenca">Frequência baixa</option>
+            <option value="avaliacao">Avaliação pendente</option>
+            <option value="certificado">Certificado disponível</option>
+            <option value="geral">Geral / Comunicado</option>
+          </select>
+        </div>
+        <div class="field"><label>Prioridade</label>
+          <select id="n-prio">
+            <option value="info">Informativo</option>
+            <option value="warn">Atenção</option>
+            <option value="error">Urgente</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row c2">
+        <div class="field"><label>Colaborador</label>
+          <select id="n-colab"><option value="">Todos</option></select>
+        </div>
+        <div class="field"><label>Treinamento</label>
+          <select id="n-trein"><option value="">Todos</option></select>
+        </div>
+      </div>
+      <div class="form-section">Mensagem</div>
+      <div class="form-row c1">
+        <div class="field"><label>Título *</label><input id="n-titulo" type="text" placeholder="Ex: Prazo de conclusão se aproxima"></div>
+      </div>
+      <div class="form-row c1">
+        <div class="field"><label>Descrição</label><textarea id="n-desc" placeholder="Detalhes da notificação..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span></span>
+      <div style="display:flex;gap:10px">
+        <button class="btn-secondary" onclick="closeNotifModal()">Cancelar</button>
+        <button class="btn-primary" id="btn-save-notif" onclick="saveNotificacao()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Registrar Notificação
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/certificados.js"></script>
+</body>
+</html>
