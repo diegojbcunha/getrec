@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GETREC Login</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f4f6fb; margin: 0; }
+    .login-box { width: 340px; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 10px 30px rgba(14, 20, 40, 0.15); }
+    .login-box h2 { margin: 0 0 18px; color: #1e293b; }
+    .login-box input { width: 100%; margin-bottom: 12px; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; }
+    .login-box button { width: 100%; padding: 10px 12px; border: none; color: white; background: #2d6cdf; border-radius: 6px; cursor: pointer; }
+    .login-box button:hover { background: #1f56c5; }
+    #error-msg { color: #dc2626; min-height: 18px; margin: 10px 0; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Entrar no GETREC</h2>
+    <input id="email" type="email" placeholder="E-mail" autocomplete="username" />
+    <input id="senha" type="password" placeholder="Senha" autocomplete="current-password" />
+    <div id="error-msg"></div>
+    <button id="btn-login">Login</button>
+  </div>
+
+  <script>
+    async function doLogin() {
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+      const err = document.getElementById('error-msg');
+      err.textContent = '';
+      if (!email || !senha) {
+        err.textContent = 'E-mail e senha são obrigatórios.';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, senha }),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.message || 'Erro de autenticação');
+        }
+        const usuario = await res.json();
+        localStorage.setItem('getrec_user', JSON.stringify(usuario));
+        window.location.href = 'dashboard-adm.html';
+      } catch (error) {
+        err.textContent = error.message;
+      }
+    }
+
+    document.getElementById('btn-login').addEventListener('click', doLogin);
+    document.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') doLogin();
+    });
+  </script>
+</body>
+</html>
