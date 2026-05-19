@@ -64,6 +64,8 @@ app.post("/api/login", async (req, res) => {
     });
 
     if (authError) {
+      // LOG ADICIONADO PARA DEBUG: Mostra o motivo real da recusa no terminal
+      console.error("Detalhes do erro do Supabase (Auth):", authError);
       return res.status(401).json({ message: "Credenciais inválidas." });
     }
 
@@ -75,7 +77,8 @@ app.post("/api/login", async (req, res) => {
       .single();
 
     if (perfilError) {
-      console.log(error);
+      // CORRIGIDO: A variável correta é perfilError
+      console.error("Erro ao buscar perfil na tabela:", perfilError);
       return res.status(404).json({ message: "Perfil não encontrado para este usuário." });
     }
 
@@ -89,6 +92,7 @@ app.post("/api/login", async (req, res) => {
     return handleError(res, error);
   }
 });
+
 // ====================================================================
 // 3. ROTAS API CRUD GERAIS
 // ====================================================================
