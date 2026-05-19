@@ -364,29 +364,37 @@ async function addMatricula() {
   const treinId = document.getElementById("mat-trein-sel").value;
   const status = document.getElementById("mat-status-sel").value;
   const notaVal = document.getElementById("mat-nota-inp").value;
+  
   if (!treinId) {
     toast("Selecione um treinamento", "error");
     return;
   }
+  
   try {
-    const { error } = await db
-      .from("matriculas")
-      .insert({
-        colaborador_id: matColabId,
-        treinamento_id: treinId,
-        status,
-        nota: notaVal !== "" ? parseFloat(notaVal) : null,
-      });
-    if (error) throw error;
+    // PREPARANDO OS DADOS
+    const payload = {
+      colaborador_id: matColabId,
+      treinamento_id: treinId,
+      status,
+      nota: notaVal !== "" ? parseFloat(notaVal) : null,
+    };
+
+    // ENVIANDO PARA O BACK-END ATRAVÉS DA API (Corrigido aqui!)
+    await api.post("matriculas", payload);
+
     toast("Matrícula adicionada!", "success");
     await loadAll();
     renderMatList(matColabId);
+    
+    // ATUALIZA O SELECT DA INTERFACE
     const jaMatriculados = matriculas
       .filter((m) => m.colaborador_id === matColabId)
       .map((m) => m.treinamento_id);
+      
     const disponiveis = treinamentos.filter(
       (t) => !jaMatriculados.includes(t.id) && t.status !== "encerrado",
     );
+    
     document.getElementById("mat-trein-sel").innerHTML =
       '<option value="">— Selecionar treinamento —</option>' +
       disponiveis
@@ -395,21 +403,23 @@ async function addMatricula() {
             `<option value="${t.id}">${t.nome}${t.area ? " · " + t.area : ""}</option>`,
         )
         .join("");
+        
     document.getElementById("mat-nota-inp").value = "";
+    
   } catch (err) {
     toast("Erro: " + err.message, "error");
   }
 }
 async function updateMatStatus(matId, newStatus) {
   try {
-    const { error } = await db
-      .from("matriculas")
-      .update({ status: newStatus })
-      .eq("id", matId);
-    if (error) throw error;
+    // ENVIANDO PARA O BACK-END ATRAVÉS DA API (Corrigido aqui!)
+    await api.put(`matriculas/${matId}`, { status: newStatus });
+    
     toast("Status atualizado!", "success");
     await loadAll();
+    
     if (matColabId) renderMatList(matColabId);
+    
   } catch (err) {
     toast("Erro: " + err.message, "error");
   }
